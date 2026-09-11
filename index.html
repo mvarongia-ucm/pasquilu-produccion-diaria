@@ -518,6 +518,12 @@ function cargar(){
     var d = JSON.parse(raw);
     if(!d || !d.cards || !d.cards.length) return false;
     cards = d.cards;
+    /* El borrador guarda la unidad que habia ese dia. Si el catalogo cambio
+       despues (por ejemplo de kg a gr), el borrador la traeria vieja, asi que
+       se recalcula la unidad contra el catalogo actual al abrir. */
+    cards.forEach(function(c){
+      (c.mp || []).forEach(function(m){ m.u = UNI[norm(m.p)] || ""; });
+    });
     if(d.meta){
       document.getElementById("fFecha").value = d.meta.fecha || "";
       document.getElementById("fPast").value  = d.meta.pastelero || "";
