@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es" class="nojs">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.className="js";</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1A1B1C">
+<title>Producci&oacute;n diaria por pastelero &mdash; Pasteler&iacute;a Pasquil&uacute;</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rosa:#FAAABF; --rosa-deep:#D9738F; --rosa-veil:#FDEFF3; --rosa-soft:#FCE3EA;
+  --ink:#1A1B1C; --ink-soft:#4A4B4D; --ink-mute:#8E8F92;
+  --line:#E4E1DF; --paper:#FBF9F8;
+  --ok:#2E7D5B; --ok-bg:#E8F4EE; --ok-line:#9CCDB6;
+  --err:#C0392B; --err-bg:#FCEEEC; --err-line:#E8B4AD;
+  --warn:#B7791F; --warn-bg:#FDF3E2; --warn-line:#E8CE9C;
+  --logo-pasquilu:url("data:image/png;base64,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");
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
+.img-pasquilu{background-image:var(--logo-pasquilu);background-repeat:no-repeat;
+  background-position:center;background-size:contain;}
+
+.topbar{position:sticky;top:0;z-index:60;background:var(--ink);color:#fff;}
+.tb-in{max-width:1080px;margin:0 auto;padding:9px 16px;display:flex;align-items:center;gap:12px;}
+.tb-logo{width:42px;height:42px;flex-shrink:0;}
+.tb-txt{flex:1;min-width:0;}
+.tb-code{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--rosa);text-transform:uppercase;}
+.tb-title{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tb-st{flex-shrink:0;text-align:right;font-size:11px;line-height:1.3;color:#b9b9ba;}
+.tb-st b{display:block;font-size:16px;color:#fff;font-weight:700;}
+
+.shell{max-width:1080px;margin:0 auto;padding:0 16px 100px;}
+.hero{background:var(--rosa-veil);border-bottom:1px solid var(--rosa-soft);
+  margin:0 -16px 20px;padding:30px 16px 26px;}
+.hero-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:18px;}
+.hero-logo{width:64px;height:64px;flex-shrink:0;}
+h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(25px,3.8vw,38px);line-height:1.07;
+   font-weight:600;letter-spacing:-.02em;margin:0 0 5px;}
+.hero p{margin:0;color:var(--ink-soft);font-size:14px;max-width:58ch;}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;margin:0 0 16px;overflow:hidden;}
+.card-h{padding:13px 17px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;gap:10px;flex-wrap:wrap;}
+.card-h h2{margin:0;font-size:13.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;}
+.card-b{padding:16px 17px;}
+
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;}
+.fld{display:flex;flex-direction:column;gap:5px;}
+.fld label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);}
+.fld input,.fld select{font-family:inherit;font-size:16px;color:var(--ink);background:#fff;
+  border:1.5px solid var(--line);border-radius:9px;padding:11px 12px;width:100%;}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--rosa-deep);}
+
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:14.5px;}
+thead th{background:var(--rosa);color:var(--ink);
+  font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:10px 8px;text-align:left;border-bottom:1px solid var(--rosa-deep);line-height:1.25;}
+thead th.n{text-align:center;width:96px;}
+thead th.u{text-align:center;width:126px;}
+tbody td{padding:0;border-bottom:1px solid var(--line);vertical-align:middle;}
+tbody td.p{padding:9px 8px;font-weight:500;line-height:1.3;}
+.cat-row td{background:var(--ink);color:#fff;padding:8px 10px;
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.cat-row td span{float:right;color:var(--rosa);letter-spacing:.04em;font-weight:600;text-transform:none;}
+
+.qty{width:100%;border:0;background:transparent;font-family:inherit;font-size:17px;font-weight:600;
+  text-align:center;padding:11px 2px;color:var(--ink);}
+.qty:focus{outline:none;background:var(--rosa-soft);}
+td.q{border-left:1px solid var(--line);}
+td.u{border-left:1px solid var(--line);padding:5px 6px;}
+.uni{width:100%;border:1px solid var(--line);border-radius:7px;background:#fff;font-family:inherit;
+  font-size:13px;color:var(--ink-soft);padding:7px 5px;text-align:center;text-align-last:center;}
+.uni:focus{outline:none;border-color:var(--rosa-deep);}
+.uni.pide{border-color:var(--warn-line);background:var(--warn-bg);color:var(--warn);font-weight:600;}
+
+.del{border:0;background:transparent;color:var(--ink-mute);cursor:pointer;font-size:18px;
+  line-height:1;padding:6px 9px;border-radius:6px;}
+.del:hover{background:var(--err-bg);color:var(--err);}
+td.x{width:36px;text-align:center;}
+.addrow td{padding:7px 10px;background:var(--paper);}
+.addrow button{border:1.5px dashed var(--line);background:#fff;color:var(--ink-soft);
+  font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;}
+.addrow button:hover{border-color:var(--rosa-deep);color:var(--rosa-deep);}
+
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;}
+.sbox{border:1px solid var(--line);border-radius:11px;padding:13px 15px;background:var(--paper);}
+.sbox .k{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);}
+.sbox .v{font-family:"Playfair Display",Georgia,serif;font-size:27px;font-weight:600;line-height:1.15;margin-top:2px;}
+.sbox.ok{background:var(--ok-bg);border-color:var(--ok-line);} .sbox.ok .v{color:var(--ok);}
+.sbox.warn{background:var(--warn-bg);border-color:var(--warn-line);} .sbox.warn .v{color:var(--warn);}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;
+  font-size:13.5px;font-weight:600;padding:12px 22px;border-radius:40px;
+  border:1.5px solid transparent;cursor:pointer;transition:all .2s ease;}
+.btn-1{background:var(--ink);color:#fff;} .btn-1:hover{background:var(--rosa-deep);}
+.btn-1:disabled{background:var(--ink-mute);cursor:not-allowed;}
+.btn-2{background:#fff;color:var(--ink);border-color:var(--line);} .btn-2:hover{border-color:var(--ink);}
+.btn-3{background:#fff;color:var(--err);border-color:var(--err-line);} .btn-3:hover{background:var(--err-bg);}
+
+.note{font-size:12.5px;color:var(--ink-mute);margin:11px 0 0;line-height:1.5;}
+.msg{margin:12px 0 0;padding:11px 15px;border-radius:10px;font-size:13.5px;font-weight:500;display:none;}
+.msg.on{display:block;}
+.msg.ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line);}
+.msg.err{background:var(--err-bg);color:var(--err);border:1px solid var(--err-line);}
+.msg.wait{background:var(--rosa-veil);color:var(--rosa-deep);border:1px solid var(--rosa-soft);}
+
+.saved{font-size:11.5px;color:var(--ink-mute);}
+.dest{font-size:11.5px;font-weight:600;color:var(--rosa-deep);background:var(--rosa-veil);
+  border:1px solid var(--rosa-soft);border-radius:20px;padding:4px 12px;}
+.dest.falta{color:var(--warn);background:var(--warn-bg);border-color:var(--warn-line);}
+
+.nojs .only-js{display:none;}
+.js .no-js{display:none;}
+.nojs-warn{background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn);
+  padding:13px 16px;border-radius:11px;font-size:13.5px;margin:0 0 18px;}
+
+@media(max-width:700px){
+  .tb-st{display:none;}
+  .hero-logo{width:50px;height:50px;}
+  .hero{margin:0 -16px 16px;padding:24px 16px 20px;}
+  thead th{font-size:9.5px;padding:8px 4px;letter-spacing:.04em;}
+  thead th.n{width:72px;} thead th.u{width:104px;}
+  table{font-size:13px;}
+  tbody td.p{padding:8px 6px;}
+  .qty{font-size:16px;padding:12px 2px;}
+  .uni{font-size:12px;padding:7px 2px;}
+  .card-b{padding:14px;}
+  .acts .btn{flex:1 1 100%;}
+}
+@media print{
+  .topbar,.acts,.addrow,.del,td.x,.note,.msg{display:none!important;}
+  body{background:#fff;} .card{break-inside:avoid;border-color:#bbb;}
+  thead th{position:static;background:#eee!important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .uni{border:0;} .hero{background:#fff;border-bottom:2px solid #000;}
+}
+
+/* --- diálogos propios: dentro del portal los del navegador quedan ignorados --- */
+.dlg-fondo{position:fixed;inset:0;background:rgba(26,27,28,.55);z-index:200;
+  display:none;align-items:center;justify-content:center;padding:20px;}
+.dlg-fondo.on{display:flex;}
+.dlg{background:#fff;border-radius:15px;max-width:440px;width:100%;
+  box-shadow:0 18px 50px rgba(0,0,0,.25);overflow:hidden;}
+.dlg-c{padding:24px 26px 20px;}
+.dlg-t{font-family:"Playfair Display",Georgia,serif;font-size:21px;font-weight:600;
+  line-height:1.2;margin:0 0 10px;color:var(--ink);}
+.dlg-p{margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft);white-space:pre-line;}
+.dlg-in{width:100%;font-family:inherit;font-size:16px;color:var(--ink);background:#fff;
+  border:1.5px solid var(--line);border-radius:9px;padding:11px 12px;margin-top:14px;}
+.dlg-in:focus{outline:none;border-color:var(--rosa-deep);}
+.dlg-b{display:flex;gap:10px;justify-content:flex-end;padding:0 26px 22px;}
+.dlg-b .btn{padding:10px 20px;font-size:13.5px;}
+
+/* --- tarjetas de produccion --- */
+.pnum{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+  border-radius:50%;background:var(--rosa);color:var(--ink);font-size:11px;font-weight:700;}
+.card-h .esp{flex:1;}
+.pcard.llena{border-color:var(--ok-line);}
+.pcard.llena .card-h{background:var(--ok-bg);}
+.mp{margin-top:16px;border-top:1px solid var(--line);padding-top:14px;}
+.mp-t{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-mute);margin:0 0 9px;}
+.mp-cab,.mp-row{display:grid;grid-template-columns:1fr 108px 92px 34px;gap:8px;align-items:center;}
+.mp-cab{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-mute);margin-bottom:5px;}
+.mp-cab span:nth-child(2),.mp-cab span:nth-child(3){text-align:center;}
+.mp-row{margin-bottom:8px;}
+.mp-row input{font-family:inherit;font-size:15px;color:var(--ink);background:#fff;
+  border:1.5px solid var(--line);border-radius:9px;padding:10px 11px;width:100%;}
+.mp-row input:focus{outline:none;border-color:var(--rosa-deep);}
+.mp-row .mUni{background:var(--paper);color:var(--ink-soft);text-align:center;font-size:13px;
+  cursor:not-allowed;}
+.mp-row .mCant{text-align:center;font-weight:600;}
+.mp-row .mProd.mala{border-color:var(--warn-line);background:var(--warn-bg);}
+.mp-vacio{font-size:12.5px;color:var(--ink-mute);margin:0 0 9px;}
+.addmp{border:1.5px dashed var(--line);background:#fff;color:var(--ink-soft);font-family:inherit;
+  font-size:12.5px;font-weight:600;padding:9px 15px;border-radius:8px;cursor:pointer;}
+.addmp:hover{border-color:var(--rosa-deep);color:var(--rosa-deep);}
+.addcard{width:100%;border:1.5px dashed var(--line);background:#fff;color:var(--ink-soft);
+  font-family:inherit;font-size:13.5px;font-weight:600;padding:14px;border-radius:12px;
+  cursor:pointer;margin:0 0 16px;}
+.addcard:hover{border-color:var(--rosa-deep);color:var(--rosa-deep);}
+@media(max-width:700px){
+  .mp-cab{display:none;}
+  .mp-row{grid-template-columns:1fr 92px 34px;grid-template-areas:"p p p" "u c x";}
+  .mp-row .mProd{grid-area:p;} .mp-row .mUni{grid-area:u;}
+  .mp-row .mCant{grid-area:c;} .mp-row .del{grid-area:x;}
+}
+@media print{ .addmp,.addcard{display:none!important;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-in">
+    <div class="tb-logo img-pasquilu" role="img" aria-label="Pasquil&uacute;"></div>
+    <div class="tb-txt">
+      <div class="tb-code">F&aacute;brica &middot; registro diario</div>
+      <div class="tb-title">Producci&oacute;n diaria por pastelero</div>
+    </div>
+    <div class="tb-st only-js"><b id="tbCont">0</b>productos</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div class="hero">
+    <div class="hero-in">
+      <div class="hero-logo img-pasquilu" role="img" aria-label="Pasquil&uacute;"></div>
+      <div>
+        <h1>Producci&oacute;n diaria por pastelero</h1>
+        <p>Anota lo que produjiste hoy y la materia prima que ocupaste en cada producto.
+           Las tarjetas que dejes vac&iacute;as no se env&iacute;an.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-js nojs-warn">
+    Esta planilla necesita JavaScript. Si no puedes activarlo, imprime el formato en papel
+    y anota la producci&oacute;n a mano.
+  </div>
+
+  <div class="card">
+    <div class="card-h">
+      <h2>Datos del registro</h2>
+      <span class="esp"></span>
+      <span class="dest" id="dest"></span>
+      <span class="saved" id="savedAt"></span>
+    </div>
+    <div class="card-b">
+      <div class="meta">
+        <div class="fld">
+          <label for="fFecha">Fecha</label>
+          <input type="date" id="fFecha">
+        </div>
+        <div class="fld">
+          <label for="fPast">Responsable del conteo</label>
+          <select id="fPast">
+            <option value="">&mdash; Elige tu nombre &mdash;</option>
+              <option value="Dilena del Valle Correa">Dilena del Valle Correa</option>
+              <option value="Yanara Martínez">Yanara Martínez</option>
+              <option value="María Eugenia Parada">María Eugenia Parada</option>
+              <option value="Iván Molina">Iván Molina</option>
+              <option value="Leonardo Huerta">Leonardo Huerta</option>
+              <option value="Usuario 1">Usuario 1</option>
+              <option value="Usuario 2">Usuario 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cards"></div>
+
+  <button class="addcard only-js" id="bAddCard">+ Agregar producto</button>
+
+  <div class="card only-js">
+    <div class="card-h"><h2>Resumen</h2></div>
+    <div class="card-b">
+      <div class="sum">
+        <div class="sbox"><div class="k">Tarjetas abiertas</div><div class="v" id="sCards">8</div></div>
+        <div class="sbox ok"><div class="k">Productos con datos</div><div class="v" id="sProd">0</div></div>
+        <div class="sbox"><div class="k">Unidades producidas</div><div class="v" id="sUnid">0</div></div>
+        <div class="sbox warn"><div class="k">Materias sin cantidad</div><div class="v" id="sMal">0</div></div>
+      </div>
+      <p class="note">Escribe las primeras letras y el nombre se completa solo. La unidad de la
+        materia prima la pone el sistema y no se puede cambiar, para que todos los d&iacute;as se
+        midan igual.</p>
+      <p class="note"><b>Cantidades con decimales:</b> se puede escribir <b>0,5</b> o <b>0.5</b>,
+        las dos formas valen. Medio kilo se anota 0,5 en kg &mdash; no 500. Un cuarto de litro es
+        0,25 en L. Si el n&uacute;mero pasa de mil, escr&iacute;belo seguido: 1500, sin punto.</p>
+    </div>
+  </div>
+
+  <div class="card only-js">
+    <div class="card-h"><h2>Cerrar el registro</h2></div>
+    <div class="card-b">
+      <div class="acts">
+        <button class="btn btn-1" id="bSend">Enviar la producci&oacute;n</button>
+        <button class="btn btn-2" id="bPrint">Imprimir</button>
+        <button class="btn btn-2" id="bCsv">Descargar Excel</button>
+        <button class="btn btn-3" id="bClear">Vaciar el formulario</button>
+      </div>
+      <div class="msg" id="msg"></div>
+      <p class="note">Mientras escribes, lo anotado queda guardado en este equipo por si se cierra
+        la p&aacute;gina. El registro definitivo queda cuando env&iacute;as la producci&oacute;n.</p>
+    </div>
+  </div>
+
+</div>
+
+<datalist id="dlProd"></datalist>
+<datalist id="dlMP"></datalist>
+
+<div class="dlg-fondo" id="dlgFondo" role="dialog" aria-modal="true">
+  <div class="dlg">
+    <div class="dlg-c">
+      <h2 class="dlg-t" id="dlgT"></h2>
+      <p class="dlg-p" id="dlgP"></p>
+      <input type="text" class="dlg-in" id="dlgIn" style="display:none;">
+    </div>
+    <div class="dlg-b">
+      <button class="btn btn-2" id="dlgNo">Cancelar</button>
+      <button class="btn btn-1" id="dlgSi">Continuar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* ================= DIÁLOGOS PROPIOS =================
+   Cuando la página se abre dentro del portal va embebida, y ahí el
+   navegador ignora confirm() y prompt(): devuelven "no" sin avisar.
+   Eso dejaba enviar y vaciar sin funcionar, en silencio.            */
+var dlgFondo = document.getElementById("dlgFondo");
+var dlgT  = document.getElementById("dlgT");
+var dlgP  = document.getElementById("dlgP");
+var dlgIn = document.getElementById("dlgIn");
+var dlgSi = document.getElementById("dlgSi");
+var dlgNo = document.getElementById("dlgNo");
+var dlgRes = null;
+
+function dlgCerrar(v){
+  dlgFondo.classList.remove("on");
+  var f = dlgRes; dlgRes = null;
+  if(f) f(v);
+}
+function dlgVacio(){ return dlgIn.style.display === "none" ? false : null; }
+
+dlgSi.addEventListener("click", function(){
+  dlgCerrar(dlgIn.style.display === "none" ? true : (dlgIn.value.trim() || null));
+});
+dlgNo.addEventListener("click", function(){ dlgCerrar(dlgVacio()); });
+dlgFondo.addEventListener("click", function(e){ if(e.target === dlgFondo) dlgCerrar(dlgVacio()); });
+document.addEventListener("keydown", function(e){
+  if(!dlgFondo.classList.contains("on")) return;
+  if(e.key === "Escape") dlgCerrar(dlgVacio());
+  if(e.key === "Enter" && dlgIn.style.display !== "none") dlgSi.click();
+});
+
+/* Reemplaza a confirm(): entrega true o false. */
+function preguntar(titulo, texto, botonSi){
+  dlgT.textContent = titulo;
+  dlgP.textContent = texto || "";
+  dlgP.style.display = texto ? "" : "none";
+  dlgIn.style.display = "none";
+  dlgSi.textContent = botonSi || "Continuar";
+  dlgFondo.classList.add("on");
+  return new Promise(function(r){ dlgRes = r; });
+}
+
+/* Reemplaza a prompt(): entrega el texto escrito, o null si se cancela. */
+function pedirTexto(titulo, marcador){
+  dlgT.textContent = titulo;
+  dlgP.style.display = "none";
+  dlgIn.style.display = "";
+  dlgIn.value = "";
+  dlgIn.placeholder = marcador || "";
+  dlgSi.textContent = "Agregar";
+  dlgFondo.classList.add("on");
+  setTimeout(function(){ dlgIn.focus(); }, 60);
+  return new Promise(function(r){ dlgRes = r; });
+}
+
+
+var D   = {"productos": ["Berlín Crema Pastelera", "Berlín Crema Pastelera y Manjar", "Berlín Manjar", "Cachitos", "Fosforito", "Pan integral", "Princesas", "Rollito canela", "Strudel berries", "Strudel manzana", "Mini alfajor x50 unidades", "Mini Cachito x50 unidades", "Mini chilenito x50 unidades", "Mini maicena x50 unidades", "Mini mendocino x50 unidades", "Alfajor de maicena", "Alfajor de mendocinos", "Alfajor sin baño", "Chilenito", "Galleta NY Bon o Bon", "Galleta NY KitKat", "Galleta NY Oreo", "Galletas chips 100g", "Galletas conchita 100g", "Galletas de monito 100g", "Galletas rizadas 100g", "Aro nuez", "Barquillo blanco", "Barquillo pistacho", "Barquillos manjar", "Barquillos nutella", "Brownie Chocolate", "Brownie Oreo", "Cocadas de manjar", "Cocadas horneadas", "Delicias", "Lamina torta", "Milhoja con manjar", "Prestigio de coco", "Trufas", "Mantequilla pote 10grs", "Queque de limón amapola", "Queque de naranja", "Queque Pasquilú", "Queque plátano naranja", "Queque zanahoria canela", "Cheesecake frío", "Cheesecake horneado frambuesa", "Cheesecake horneado maracuyá", "Cheesecake oreo", "Kuchen de nuez", "Kuchen enrejada berries", "Kuchen enrejada durazno", "Kuchen enrejada manzana", "Tarta de frutas", "Pie de frambuesa", "Pie de limón", "Pie de maracuyá", "Pie de naranja", "Pie sureño", "Tarta pie de ganach", "Torta Carrot Cake 15 personas", "Torta Carrot Cake 20 personas", "Torta Carrot Cake 30 personas", "Torta Carrot Cake 8 personas", "Torta Matilda 15 personas", "Torta Matilda 20 personas", "Torta Matilda 30 personas", "Torta Matilda 8 personas", "Torta Oreo 15 personas", "Torta Oreo 20 personas", "Torta Oreo 30 personas", "Torta Oreo 8 personas", "Torta Pamela 15 personas", "Torta Pamela 20 personas", "Torta Pamela 30 personas", "Torta Pamela 8 personas", "Torta Red Velvet 15 personas", "Torta Red Velvet 20 personas", "Torta Red Velvet 30 personas", "Torta Red Velvet 8 personas", "Torta Sacher 15 personas", "Torta Sacher 20 personas", "Torta Sacher 30 personas", "Torta Sacher 8 personas", "Torta Tres Leches 15 personas", "Torta Tres Leches 20 personas", "Torta Tres Leches 30 personas", "Torta Tres Leches 8 personas", "Torta Vienna 15 personas", "Torta Vienna 20 personas", "Torta Vienna 30 personas", "Torta Vienna 8 personas", "Torta Amor 10 personas", "Torta Amor 15 personas", "Torta Amor 20 personas", "Torta Amor 30 personas", "Torta Amor sin azúcar 10 personas", "Torta Amor sin azúcar 15 personas", "Torta Amor sin azúcar 20 personas", "Torta Amor sin azúcar 30 personas", "Torta Antonella 10 personas", "Torta Antonella 15 personas", "Torta Antonella 20 personas", "Torta Antonella 30 personas", "Torta Catalina 10 personas", "Torta Catalina 15 personas", "Torta Catalina 20 personas", "Torta Catalina 30 personas", "Torta Guinda 10 personas", "Torta Guinda 15 personas", "Torta Guinda 20 personas", "Torta Guinda 30 personas", "Torta Miranda 10 personas", "Torta Miranda 15 personas", "Torta Miranda 20 personas", "Torta Miranda 30 personas", "Torta Platano 30 personas", "Torta Plátano 10 personas", "Torta Plátano 15 personas", "Torta Plátano 20 personas", "Torta Dilena 15 personas", "Torta Dilena 20 personas", "Torta Dilena 30 personas", "Torta Dilena 8 personas", "Torta Eloisa 15 personas", "Torta Eloisa 20 personas", "Torta Eloisa 30 personas", "Torta Eloisa 8 personas", "Torta Fiorella 15 personas", "Torta Fiorella 20 personas", "Torta Fiorella 30 personas", "Torta Isidora 15 personas", "Torta Isidora 20 personas", "Torta Isidora 30 personas", "Torta Isidora 8 personas", "Torta Josefa 15 personas", "Torta Josefa 20 personas", "Torta Josefa 30 personas", "Torta Josefa 8 personas", "Torta Loreto 15 personas", "Torta Loreto 20 personas", "Torta Loreto 30 personas", "Torta Loreto 8 personas", "Torta Mocka 15 personas", "Torta Mocka 20 personas", "Torta Mocka 30 personas", "Torta Mocka 8 personas", "Torta Sofía 15 personas", "Torta Sofía 20 personas", "Torta Sofía 30 personas", "Torta Sofía 8 personas"], "materias": [{"p": "Alulosa Líquida", "u": "L"}, {"p": "Azúcar en sachet 0,5 g", "u": "unid."}, {"p": "Azúcar flor", "u": "kg"}, {"p": "Azúcar refinada", "u": "kg"}, {"p": "Azúcar Rubia", "u": "kg"}, {"p": "Chancaca", "u": "kg"}, {"p": "Eritritol", "u": "kg"}, {"p": "Glucosa", "u": "kg"}, {"p": "Miel", "u": "kg"}, {"p": "Stevia en sachet 0,5 g", "u": "unid."}, {"p": "Stevia líquida", "u": "L"}, {"p": "Sucralosa en polvo", "u": "kg"}, {"p": "Bandeja rectangular N.º 3", "u": "unid."}, {"p": "Bandeja redonda 25 cm × 2 mm", "u": "unid."}, {"p": "Bandeja redonda 30 cm × 2 mm", "u": "unid."}, {"p": "Bandeja redonda 35 cm × 12 mm", "u": "unid."}, {"p": "Bandeja redonda 35 cm × 2 mm", "u": "unid."}, {"p": "Bandeja redonda chica", "u": "unid."}, {"p": "Bandeja redonda N.º 3", "u": "unid."}, {"p": "Bandeja redonda N.º 4", "u": "unid."}, {"p": "Base de tartaleta", "u": "unid."}, {"p": "Base para torta de 30 personas", "u": "unid."}, {"p": "Base redonda blanca 35 cm", "u": "unid."}, {"p": "Base redonda dorada 20 cm", "u": "unid."}, {"p": "Base redonda dorada 25 cm", "u": "unid."}, {"p": "Base redonda plateada 30 cm", "u": "unid."}, {"p": "Base tarta 1025-3 M", "u": "unid."}, {"p": "Base torta 1025-5 M", "u": "unid."}, {"p": "Blonda N.º 12", "u": "unid."}, {"p": "Blonda N.º 16", "u": "unid."}, {"p": "Cupsula n°3", "u": "unid."}, {"p": "Cupsula n°5", "u": "unid."}, {"p": "Cupsula n°8", "u": "unid."}, {"p": "Molde para pan de Pascua 1 kg", "u": "unid."}, {"p": "Moldes de cupcake", "u": "unid."}, {"p": "Moldes de muffin multicolor", "u": "unid."}, {"p": "Café instantáneo Nescafé", "u": "kg"}, {"p": "Café orgánico buffalo soldier", "u": "kg"}, {"p": "Café orgánico keep on moving", "u": "kg"}, {"p": "Cappuccino vainilla Marley", "u": "kg"}, {"p": "Chai latte Marley", "u": "kg"}, {"p": "Jugo de naranja Watts", "u": "L"}, {"p": "Jugo Mango Guallarauco", "u": "L"}, {"p": "Néctar de frambuesa", "u": "L"}, {"p": "Té Marley English Breakfast", "u": "unid."}, {"p": "Acetato 10 cm", "u": "unid."}, {"p": "Bolsa camiseta chica 29 × 32 cm", "u": "unid."}, {"p": "Bolsa camiseta grande 45 × 55 cm", "u": "unid."}, {"p": "Bolsa camiseta mediana 35 × 45 cm", "u": "unid."}, {"p": "Bolsa Cheaf delivery chica", "u": "unid."}, {"p": "Bolsa Cheaf delivery grande", "u": "unid."}, {"p": "Bolsa Kraft 35x32x18", "u": "unid."}, {"p": "Bolsa para galletas 10 × 20 cm", "u": "unid."}, {"p": "Bolsa para galletas 12 × 20 cm", "u": "unid."}, {"p": "Bolsa para galletas 15 × 20 cm", "u": "unid."}, {"p": "Bolsa para pan de Pascua 30 × 40 cm", "u": "unid."}, {"p": "Bolsa taco", "u": "unid."}, {"p": "Bolsa Ziploc 20 × 30 cm", "u": "unid."}, {"p": "Bolsas Pedido Ya", "u": "unid."}, {"p": "Caja para panetón", "u": "unid."}, {"p": "Caja para torta blanca 21 × 21 cm", "u": "unid."}, {"p": "Cartucho de papel kraft grande N.º 7", "u": "unid."}, {"p": "Cartucho de papel kraft N.º 1", "u": "unid."}, {"p": "Cartucho de papel kraft N.º 3", "u": "unid."}, {"p": "Cartucho de papel kraft N.º 5", "u": "unid."}, {"p": "Cartucho de papel kraft pequeño para empanada", "u": "unid."}, {"p": "Cinta roja para pan de Pascua", "u": "unid."}, {"p": "Cinta verde para pan de Pascua", "u": "unid."}, {"p": "Empaques Pedido Ya", "u": "unid."}, {"p": "Huincha de cartón 7 cm", "u": "unid."}, {"p": "Papel Alusa para queques", "u": "unid."}, {"p": "Papel Alusa rollo", "u": "unid."}, {"p": "Papel celofán", "u": "unid."}, {"p": "Papel kraft rollo", "u": "unid."}, {"p": "Papel mantequilla rollo 10 m", "u": "unid."}, {"p": "Porta vaso Kraft", "u": "unid."}, {"p": "Rollo Bolsa de basura pequeña 50 × 70 cm", "u": "unid."}, {"p": "Cacao amargo", "u": "kg"}, {"p": "Cacao Dulce", "u": "kg"}, {"p": "Chips de chocolate Caravella", "u": "kg"}, {"p": "Chocolate blanco Callebaut", "u": "kg"}, {"p": "Chocolate Caravella azul", "u": "kg"}, {"p": "Chocolate Caravella verde", "u": "kg"}, {"p": "Chocolate de cobertura Neucober sin azúcar", "u": "kg"}, {"p": "Chocolate Marley", "u": "kg"}, {"p": "Chocolate semiamargo Callebaut", "u": "kg"}, {"p": "Cobertura de chocolate semiamargo BABBI para postres", "u": "kg"}, {"p": "Cobertura Neucober 404", "u": "kg"}, {"p": "Cobertura Neucober 407", "u": "kg"}, {"p": "Cobertura Neucober blanca 410", "u": "kg"}, {"p": "Brillo decorativo dorado Star Chemical", "u": "unid."}, {"p": "Brillo Puratos", "u": "kg"}, {"p": "Colorante a la grasa amarillo Star Chemical", "u": "unid."}, {"p": "Colorante a la grasa azul Star Chemical", "u": "unid."}, {"p": "Colorante a la grasa celeste bebé Star Chemical", "u": "unid."}, {"p": "Colorante a la grasa fucsia Guttche", "u": "unid."}, {"p": "Colorante a la grasa naranja neón Star Chemical", "u": "unid."}, {"p": "Colorante a la grasa negro Kreatortas", "u": "unid."}, {"p": "Colorante a la grasa rosado Star Chemical", "u": "unid."}, {"p": "Colorante a la grasa verde Guttche", "u": "unid."}, {"p": "Colorante a la grasa verde Star Chemical", "u": "unid."}, {"p": "Colorante en polvo Red Velvet", "u": "kg"}, {"p": "Colorante gel amarillo neón Star Chemical", "u": "unid."}, {"p": "Colorante gel azul neón Star Chemical", "u": "unid."}, {"p": "Colorante gel azul rey Star Chemical", "u": "unid."}, {"p": "Colorante gel blanco Star Chemical", "u": "unid."}, {"p": "Colorante gel calipso Star Chemical", "u": "unid."}, {"p": "Colorante gel celeste bebé Star Chemical", "u": "unid."}, {"p": "Colorante gel celeste Star Chemical", "u": "unid."}, {"p": "Colorante gel fucsia Guttche", "u": "unid."}, {"p": "Colorante gel negro Star Chemical", "u": "unid."}, {"p": "Colorante gel rojo navidad Star Chemical", "u": "unid."}, {"p": "Colorante gel rosado Guttche", "u": "unid."}, {"p": "Colorante gel turquesa sirenita Star Chemical", "u": "unid."}, {"p": "Colorante gel verde jade Star Chemical", "u": "unid."}, {"p": "Colorante gel verde limón Star Chemical", "u": "unid."}, {"p": "Colorante gel verde menta Star Chemical", "u": "unid."}, {"p": "Dinamita decorativa bakers rose Costa Cake", "u": "kg"}, {"p": "Dinamita decorativa fucsia Costa Cake", "u": "kg"}, {"p": "Dinamita decorativa rosa neón Costa Cake", "u": "kg"}, {"p": "Dinamita decorativa Rose Gold Costa Cake", "u": "kg"}, {"p": "Lamina Comestible", "u": "unid."}, {"p": "Mostacillas de chocolate", "u": "kg"}, {"p": "Mostacillas de colores", "u": "kg"}, {"p": "Nacarado decorativo cobre Star Chemical", "u": "kg"}, {"p": "Nacarado decorativo rosado Star Chemical", "u": "kg"}, {"p": "Nacarado decorativo Rose Gold Star Chemical", "u": "kg"}, {"p": "Bombilla 20 cm para unir tortas", "u": "unid."}, {"p": "Brochetas de madera", "u": "unid."}, {"p": "Cuchara desechable para helado", "u": "unid."}, {"p": "Cucharas de madera", "u": "unid."}, {"p": "Cucharas plásticas blancas", "u": "unid."}, {"p": "Desmoldante en spray", "u": "unid."}, {"p": "Manga blanca", "u": "unid."}, {"p": "Manga china", "u": "unid."}, {"p": "Manga reutilizable azul", "u": "unid."}, {"p": "Mondadientes", "u": "unid."}, {"p": "Palito para cake pop", "u": "unid."}, {"p": "Papel mantequilla 78×100cm", "u": "unid."}, {"p": "Revolvedores de madera", "u": "unid."}, {"p": "Servilleta de cóctel 300U", "u": "unid."}, {"p": "servilletas interfoleadas 400U", "u": "unid."}, {"p": "Tenedor desechable", "u": "unid."}, {"p": "Caja 25 × 25 cm con ventana", "u": "unid."}, {"p": "Caja kraft con ventana 700 ml", "u": "unid."}, {"p": "Caja kraft pequeña con ventana", "u": "unid."}, {"p": "Envase de plumavit", "u": "unid."}, {"p": "Envase plástico 14 × 21 cm", "u": "unid."}, {"p": "Envase triangular para trozo de pie", "u": "unid."}, {"p": "Envase triangular para trozo de torta", "u": "unid."}, {"p": "Estuche Postre Cuadrado", "u": "unid."}, {"p": "Plato plástico", "u": "unid."}, {"p": "Plato plástico pequeño", "u": "unid."}, {"p": "Plásticos para cupcake", "u": "unid."}, {"p": "Porta Sándwich", "u": "unid."}, {"p": "Pote de helado doble", "u": "unid."}, {"p": "Pote de helado simple", "u": "unid."}, {"p": "Tapa Marley espresso", "u": "unid."}, {"p": "Tapa Marley Grande", "u": "unid."}, {"p": "Tapa Marley Mediana", "u": "unid."}, {"p": "Tapas plásticas para jugo", "u": "unid."}, {"p": "Vaso Marley espresso", "u": "unid."}, {"p": "Vaso Marley Grande 14oz", "u": "unid."}, {"p": "Vaso Marley Mediano 9oz", "u": "unid."}, {"p": "Vaso para postres 150 ml", "u": "unid."}, {"p": "Vaso para postres 220 ml", "u": "unid."}, {"p": "Vaso plástico 16 oz", "u": "unid."}, {"p": "Manga de genero", "u": "unid."}, {"p": "Pesa digital Pinco", "u": "unid."}, {"p": "Soplete", "u": "unid."}, {"p": "Ají Color", "u": "kg"}, {"p": "Amaretto", "u": "L"}, {"p": "Canela en polvo", "u": "kg"}, {"p": "Clavo de olor entero", "u": "kg"}, {"p": "Esencia de coco Food Color", "u": "kg"}, {"p": "Esencia de frambuesa Food Color", "u": "kg"}, {"p": "Esencia de limón Food Color", "u": "kg"}, {"p": "Esencia de lúcuma Food Color", "u": "kg"}, {"p": "Esencia de naranja Food Color", "u": "kg"}, {"p": "Esencia de plátano Food Color", "u": "kg"}, {"p": "Esencia de trufa Food Color", "u": "kg"}, {"p": "Esencia de vainilla", "u": "L"}, {"p": "Esencia pan de Pascua", "u": "L"}, {"p": "Pisco", "u": "L"}, {"p": "Ron", "u": "L"}, {"p": "Ron blanco", "u": "L"}, {"p": "Sal", "u": "kg"}, {"p": "Vinagre de manzana", "u": "L"}, {"p": "Whisky", "u": "L"}, {"p": "Arándanos congelados", "u": "kg"}, {"p": "Berries mix congeladas", "u": "kg"}, {"p": "Frambuesas congeladas enteras", "u": "kg"}, {"p": "Frambuesas congeladas picadas", "u": "kg"}, {"p": "Frutillas", "u": "kg"}, {"p": "Frutillas congeladas", "u": "kg"}, {"p": "Limón", "u": "kg"}, {"p": "Manzana", "u": "kg"}, {"p": "Moras congeladas", "u": "kg"}, {"p": "Naranja", "u": "kg"}, {"p": "Plátano", "u": "kg"}, {"p": "Pulpa de chirimoya", "u": "kg"}, {"p": "Pulpa de frambuesa", "u": "kg"}, {"p": "Pulpa de frutilla", "u": "kg"}, {"p": "Pulpa de maracuyá congelada", "u": "kg"}, {"p": "Pulpa de piña", "u": "kg"}, {"p": "Zanahoria", "u": "kg"}, {"p": "Almendras enteras", "u": "kg"}, {"p": "Almendras picadas", "u": "kg"}, {"p": "Avellanas", "u": "kg"}, {"p": "Coco laminado", "u": "kg"}, {"p": "Coco rallado", "u": "kg"}, {"p": "Nueces", "u": "kg"}, {"p": "Nueces partidas", "u": "kg"}, {"p": "Pasas negras", "u": "kg"}, {"p": "Semillas de chía", "u": "kg"}, {"p": "Semillas de linaza", "u": "kg"}, {"p": "Semillas de maravilla", "u": "kg"}, {"p": "Almendras cubiertas con chocolate de colores", "u": "kg"}, {"p": "Barquillo", "u": "unid."}, {"p": "Bon o Bon original", "u": "kg"}, {"p": "Galletas de champagne", "u": "kg"}, {"p": "Galletas Oreo", "u": "kg"}, {"p": "Galletas Paseo", "u": "kg"}, {"p": "KitKat", "u": "kg"}, {"p": "Lotus Biscoff", "u": "kg"}, {"p": "Cartucho de gas para soplete", "u": "unid."}, {"p": "Aceite para Freir", "u": "L"}, {"p": "Aceite vegetal", "u": "L"}, {"p": "Margarina de horneo", "u": "kg"}, {"p": "Margarina Hornito", "u": "kg"}, {"p": "Margarina Master Martini", "u": "kg"}, {"p": "Margarina romea Master Martini", "u": "kg"}, {"p": "Almidón de maíz Maicena", "u": "kg"}, {"p": "Avena", "u": "kg"}, {"p": "Harina de linaza", "u": "kg"}, {"p": "Harina Integral", "u": "kg"}, {"p": "Harina roja pasteles", "u": "kg"}, {"p": "Harina verde hojarasca", "u": "kg"}, {"p": "Cofia desechable blanca", "u": "unid."}, {"p": "Guantes amarillo de látex talla M", "u": "unid."}, {"p": "Guantes amarillo de látex talla S", "u": "unid."}, {"p": "Guantes de nitrilo L", "u": "unid."}, {"p": "Guantes de nitrilo talla M", "u": "unid."}, {"p": "Guantes de nitrilo talla S", "u": "unid."}, {"p": "Guantes de polietileno", "u": "unid."}, {"p": "Guantes de vinilo talla L", "u": "unid."}, {"p": "Guantes de vinilo talla M", "u": "unid."}, {"p": "Jabón Liquido 750ml", "u": "unid."}, {"p": "Papel higiénico Confort", "u": "unid."}, {"p": "Huevos", "u": "unid."}, {"p": "Bicarbonato", "u": "kg"}, {"p": "Colapez", "u": "kg"}, {"p": "Gelatina sabor frambuesa", "u": "kg"}, {"p": "Gelatina sabor frutilla", "u": "kg"}, {"p": "Gelatina sin sabor", "u": "kg"}, {"p": "Levadura Collico", "u": "kg"}, {"p": "Polvos de hornear", "u": "kg"}, {"p": "alcohol 70% 5 Litros", "u": "unid."}, {"p": "Antigrasa 1L", "u": "unid."}, {"p": "Aromatizante", "u": "unid."}, {"p": "Cera piso 900ml", "u": "unid."}, {"p": "Cloro para ropa de color 370 g", "u": "unid."}, {"p": "Esponja chica", "u": "unid."}, {"p": "Insecticida Raid Killer", "u": "unid."}, {"p": "Jabón líquido 900 ml", "u": "unid."}, {"p": "Lavalozas Wyn 1,5 L", "u": "unid."}, {"p": "Limpiador cloro gel 900 ml", "u": "unid."}, {"p": "Limpiador cloro líquido 4L", "u": "unid."}, {"p": "Limpiador con cloro líquido 1 kg", "u": "unid."}, {"p": "Limpiador de piso 5 L", "u": "unid."}, {"p": "Limpiador en crema Cif", "u": "unid."}, {"p": "Limpiador y abrillantador", "u": "unid."}, {"p": "Limpiavidrios 750 ml", "u": "unid."}, {"p": "Limpiavidrios Multiuso 1L", "u": "unid."}, {"p": "Paño de microfibra", "u": "unid."}, {"p": "Paño multiuso amarillo", "u": "unid."}, {"p": "Rollo Bolsa de basura grande 80 × 110 cm", "u": "unid."}, {"p": "Rollo Bolsa de basura mediana 70 × 90 cm", "u": "unid."}, {"p": "Toalla interfoliada para dispensador 200U", "u": "unid."}, {"p": "Toalla nova XL", "u": "unid."}, {"p": "Trapero húmedo lavanda", "u": "unid."}, {"p": "Virutilla de acero", "u": "unid."}, {"p": "Crema Bravo", "u": "L"}, {"p": "Crema Colun", "u": "L"}, {"p": "Leche condensada", "u": "kg"}, {"p": "Leche en polvo", "u": "kg"}, {"p": "Leche en polvo Marley", "u": "kg"}, {"p": "Leche entera", "u": "L"}, {"p": "Leche evaporada", "u": "L"}, {"p": "Leche sin lactosa entera", "u": "L"}, {"p": "Mantequilla con sal", "u": "kg"}, {"p": "Mantequilla con sal 10 g", "u": "unid."}, {"p": "Mantequilla sin sal", "u": "kg"}, {"p": "Queso crema", "u": "kg"}, {"p": "Yogur natural", "u": "L"}, {"p": "Crema de pistacho", "u": "kg"}, {"p": "Crema pastelera Cremy", "u": "kg"}, {"p": "Crema pastelera sin azúcar Langer", "u": "kg"}, {"p": "Manjar Artesanal", "u": "kg"}, {"p": "Manjar Repostero", "u": "kg"}, {"p": "Manjar sin azúcar", "u": "kg"}, {"p": "Nutella", "u": "kg"}, {"p": "Pasta de almendra", "u": "kg"}, {"p": "Relleno Banana", "u": "kg"}, {"p": "Duraznos en cubos", "u": "kg"}, {"p": "Duraznos en mitades", "u": "kg"}, {"p": "Duraznos en trozos", "u": "kg"}, {"p": "Mermelada Damasco Melt", "u": "kg"}, {"p": "Mermelada de frambuesa con trozos", "u": "kg"}, {"p": "Mermelada de frambuesa Langer", "u": "kg"}, {"p": "Mermelada de frambuesa MEL", "u": "kg"}, {"p": "Mermelada de frambuesa sin azúcar", "u": "kg"}, {"p": "Mermelada de guinda", "u": "kg"}, {"p": "Mermelada de naranja", "u": "kg"}, {"p": "Puré de castaña", "u": "kg"}, {"p": "Puré de lúcuma", "u": "kg"}, {"p": "Puré de plátano", "u": "kg"}, {"p": "Berlines Congelados", "u": "unid."}, {"p": "Rollos de canela", "u": "unid."}, {"p": "Sopaipilla", "u": "unid."}, {"p": "Cinta de embalaje 100 m", "u": "unid."}, {"p": "Cuaderno universitario", "u": "unid."}, {"p": "Grifas", "u": "unid."}, {"p": "Plumón negro para pizarra", "u": "unid."}, {"p": "Plumón negro permanente", "u": "unid."}, {"p": "Plumón rojo para pizarra", "u": "unid."}, {"p": "Plumón rojo permanente", "u": "unid."}, {"p": "Bizcocho blanco", "u": "unid."}, {"p": "Bizcocho carrot", "u": "unid."}, {"p": "Bizcocho chocolate", "u": "unid."}, {"p": "Bizcocho Red", "u": "unid."}, {"p": "Masa de cachito", "u": "unid."}, {"p": "Masa de tarta", "u": "unid."}, {"p": "Masa hojarasca", "u": "unid."}, {"p": "Panqueque de chocolate", "u": "unid."}, {"p": "Panqueque de vainilla", "u": "unid."}, {"p": "Tapa de alfajor", "u": "unid."}, {"p": "Tapa de Chilenito", "u": "unid."}, {"p": "Tapa de maicena", "u": "unid."}, {"p": "Tapa Milhoja Pequeña", "u": "unid."}, {"p": "Escoba", "u": "unid."}, {"p": "Pala de aseo", "u": "unid."}], "pasteleros": ["Dilena del Valle Correa", "Yanara Martínez", "María Eugenia Parada", "Iván Molina", "Leonardo Huerta", "Usuario 1", "Usuario 2"]};
+var URL_ENVIO = "https://script.google.com/macros/s/AKfycbwt3d9POzTnjyMljmZM2o9p7H-M6uTYvRypppU-ciBSC3lq-Z-Lw9QCIGJFxuourrXP/exec";
+var CLAVE = "psq-2026-x7k93mqv";
+var LS  = "pasquilu.produccion.v1";
+var MINIMO_TARJETAS = 8;
+
+/* mapa nombre-normalizado -> unidad, para poner la unidad sola */
+var UNI = {};
+function norm(s){
+  return String(s || "").trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+D.materias.forEach(function(m){ UNI[norm(m.p)] = m.u; });
+
+/* estado: lista de tarjetas {prod, cant, mp:[{p,u,c}]} */
+var cards = [];
+var cont  = document.getElementById("cards");
+
+function tarjetaVacia(){ return {prod:"", cant:"", mp:[{p:"", u:"", c:""}]}; }
+
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+                  .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+/* Decimales: se acepta punto o coma, las dos valen igual.
+   0.5 y 0,5 son medio kilo. Se deja un solo separador para que "1.500"
+   no se pueda leer de dos maneras: si son mil quinientos, se escribe 1500. */
+function num(v){
+  var n = parseFloat(String(v).replace(",", "."));
+  return isNaN(n) ? 0 : n;
+}
+function soloNum(v){
+  var s = String(v).replace(/[^0-9.,]/g, "");
+  var i = s.search(/[.,]/);
+  if(i < 0) return s;
+  return s.slice(0, i + 1) + s.slice(i + 1).replace(/[.,]/g, "");
+}
+/* Para el Excel chileno el decimal va con coma, si no lo toma como texto. */
+function coma(n){ return String(n).replace(".", ","); }
+
+/* ---------------- listas de autocompletado ---------------- */
+(function(){
+  var a = document.getElementById("dlProd"), b = document.getElementById("dlMP");
+  a.innerHTML = D.productos.map(function(p){ return '<option value="' + esc(p) + '">'; }).join("");
+  b.innerHTML = D.materias.map(function(m){ return '<option value="' + esc(m.p) + '">'; }).join("");
+})();
+
+/* ---------------- pintado ---------------- */
+function filaMP(ci, mi, m){
+  return '<div class="mp-row" data-c="' + ci + '" data-m="' + mi + '">' +
+    '<input class="mProd" list="dlMP" placeholder="Escribe la materia prima" value="' + esc(m.p) + '">' +
+    '<input class="mUni" value="' + esc(m.u) + '" placeholder="Unidad" readonly tabindex="-1">' +
+    '<input class="mCant" inputmode="decimal" placeholder="Cant. 0,5" value="' + esc(m.c) + '">' +
+    '<button class="del" title="Quitar">&times;</button>' +
+  '</div>';
+}
+
+function pintar(){
+  cont.innerHTML = cards.map(function(c, i){
+    var llena = c.prod && c.cant !== "";
+    return '<div class="card pcard' + (llena ? " llena" : "") + '" data-c="' + i + '">' +
+      '<div class="card-h">' +
+        '<h2><span class="pnum">' + (i + 1) + '</span> &nbsp;Producto</h2>' +
+        '<span class="esp"></span>' +
+        (cards.length > MINIMO_TARJETAS
+           ? '<button class="del delCard" title="Quitar la tarjeta">&times;</button>' : '') +
+      '</div>' +
+      '<div class="card-b">' +
+        '<div class="meta">' +
+          '<div class="fld"><label>Nombre del producto</label>' +
+            '<input class="fProd" list="dlProd" placeholder="Escribe y se completa solo" value="' + esc(c.prod) + '"></div>' +
+          '<div class="fld"><label>Cantidad producida</label>' +
+            '<input class="fCant" inputmode="decimal" placeholder="0" value="' + esc(c.cant) + '"></div>' +
+        '</div>' +
+        '<div class="mp">' +
+          '<p class="mp-t">Materia prima utilizada</p>' +
+          '<div class="mp-cab"><span>Materia prima</span><span>Unidad</span><span>Cantidad</span><span></span></div>' +
+          (c.mp.length ? c.mp.map(function(m, j){ return filaMP(i, j, m); }).join("")
+                       : '<p class="mp-vacio">Sin materia prima anotada.</p>') +
+          '<button class="addmp">+ Agregar materia prima</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+  resumen();
+}
+
+/* ---------------- resumen ---------------- */
+function conDatos(){
+  return cards.filter(function(c){ return c.prod.trim() && c.cant !== ""; });
+}
+function resumen(){
+  var l = conDatos();
+  var unid = l.reduce(function(a, c){ return a + num(c.cant); }, 0);
+  var mal = 0;
+  cards.forEach(function(c){
+    c.mp.forEach(function(m){
+      if((m.p.trim() && m.c === "") || (!m.p.trim() && m.c !== "")) mal++;
+    });
+  });
+  document.getElementById("sCards").textContent = cards.length;
+  document.getElementById("sProd").textContent  = l.length;
+  document.getElementById("sUnid").textContent  = Math.round(unid * 100) / 100;
+  document.getElementById("sMal").textContent   = mal;
+  document.getElementById("tbCont").textContent = l.length;
+  destino();
+}
+
+function meta(){
+  return {
+    fecha: document.getElementById("fFecha").value,
+    pastelero: document.getElementById("fPast").value
+  };
+}
+function destino(){
+  var m = meta(), e = document.getElementById("dest");
+  if(m.fecha && m.pastelero){
+    var d = new Date(m.fecha + "T12:00:00");
+    e.className = "dest";
+    e.textContent = m.pastelero + " \u00b7 " +
+      d.toLocaleDateString("es-CL", {day:"numeric", month:"long"});
+  }else{
+    e.className = "dest falta";
+    e.textContent = "Falta indicar " + (!m.pastelero ? "el pastelero" : "la fecha");
+  }
+}
+
+/* ---------------- guardado local ---------------- */
+function stamp(at){
+  document.getElementById("savedAt").textContent = at ? "Guardado " + at : "";
+}
+function guardar(){
+  var at = new Date().toLocaleTimeString("es-CL", {hour:"2-digit", minute:"2-digit"});
+  try{
+    localStorage.setItem(LS, JSON.stringify({cards:cards, meta:meta(), at:at}));
+    stamp(at);
+  }catch(e){}
+}
+function cargar(){
+  try{
+    var raw = localStorage.getItem(LS);
+    if(!raw) return false;
+    var d = JSON.parse(raw);
+    if(!d || !d.cards || !d.cards.length) return false;
+    cards = d.cards;
+    if(d.meta){
+      document.getElementById("fFecha").value = d.meta.fecha || "";
+      document.getElementById("fPast").value  = d.meta.pastelero || "";
+    }
+    stamp(d.at);
+    return true;
+  }catch(e){ return false; }
+}
+
+/* ---------------- eventos ---------------- */
+cont.addEventListener("input", function(e){
+  var t = e.target;
+  var card = t.closest(".pcard"); if(!card) return;
+  var i = +card.getAttribute("data-c");
+
+  if(t.classList.contains("fProd")){ cards[i].prod = t.value; }
+  else if(t.classList.contains("fCant")){
+    t.value = soloNum(t.value); cards[i].cant = t.value;
+  }
+  else if(t.classList.contains("mProd")){
+    var j = +t.closest(".mp-row").getAttribute("data-m");
+    cards[i].mp[j].p = t.value;
+    var u = UNI[norm(t.value)] || "";
+    cards[i].mp[j].u = u;
+    var cu = t.closest(".mp-row").querySelector(".mUni");
+    cu.value = u;
+    t.classList.toggle("mala", !!t.value.trim() && !u);
+  }
+  else if(t.classList.contains("mCant")){
+    t.value = soloNum(t.value);
+    var j2 = +t.closest(".mp-row").getAttribute("data-m");
+    cards[i].mp[j2].c = t.value;
+  }
+  else return;
+
+  card.classList.toggle("llena", !!(cards[i].prod && cards[i].cant !== ""));
+  resumen();
+  guardar();
+});
+
+cont.addEventListener("click", function(e){
+  var b = e.target;
+  if(b.classList.contains("addmp")){
+    var i = +b.closest(".pcard").getAttribute("data-c");
+    cards[i].mp.push({p:"", u:"", c:""});
+    pintar(); guardar();
+    var filas = cont.querySelectorAll('.pcard[data-c="' + i + '"] .mProd');
+    if(filas.length) filas[filas.length - 1].focus();
+    return;
+  }
+  if(b.classList.contains("delCard")){
+    var ci = +b.closest(".pcard").getAttribute("data-c");
+    preguntar("\u00bfQuitar esta tarjeta?",
+      (cards[ci].prod ? "\u201c" + cards[ci].prod + "\u201d" : "La tarjeta " + (ci + 1)) +
+      " saldr\u00e1 del registro.", "Quitar").then(function(si){
+      if(!si) return;
+      cards.splice(ci, 1); pintar(); guardar();
+    });
+    return;
+  }
+  if(b.classList.contains("del")){
+    var row = b.closest(".mp-row"); if(!row) return;
+    var c = +row.getAttribute("data-c"), m = +row.getAttribute("data-m");
+    cards[c].mp.splice(m, 1);
+    pintar(); guardar();
+  }
+});
+
+document.getElementById("bAddCard").addEventListener("click", function(){
+  cards.push(tarjetaVacia());
+  pintar(); guardar();
+  var us = cont.querySelectorAll(".fProd");
+  if(us.length) us[us.length - 1].focus();
+});
+
+document.getElementById("fFecha").addEventListener("change", function(){ destino(); guardar(); });
+document.getElementById("fPast").addEventListener("change", function(){ destino(); guardar(); });
+
+function aviso(txt, cls){
+  var m = document.getElementById("msg");
+  m.className = "msg on " + cls;
+  m.textContent = txt;
+}
+
+/* ---------------- envio ---------------- */
+function payload(){
+  var m = meta();
+  return {
+    clave: CLAVE,
+    tipo: "produccion",
+    fecha: m.fecha,
+    pastelero: m.pastelero,
+    responsable: m.pastelero,
+    lineas: conDatos().map(function(c){
+      return {
+        producto: c.prod.trim(),
+        cantidad: num(c.cant),
+        materias: c.mp.filter(function(x){ return x.p.trim() && x.c !== ""; })
+                      .map(function(x){
+                        return { item: x.p.trim(), unidad: x.u || "", cantidad: num(x.c) };
+                      })
+      };
+    })
+  };
+}
+
+document.getElementById("bSend").addEventListener("click", function(){
+  var boton = this;
+  var m = meta();
+  if(!m.fecha){ aviso("Antes de enviar, completa la fecha.", "err"); return; }
+  if(!m.pastelero){ aviso("Antes de enviar, elige tu nombre en el responsable del conteo.", "err"); return; }
+
+  var l = conDatos();
+  if(!l.length){ aviso("No has anotado ning\u00fan producto todav\u00eda.", "err"); return; }
+
+  /* filas de materia prima a medio llenar */
+  var medias = [];
+  cards.forEach(function(c, i){
+    c.mp.forEach(function(x){
+      if(x.p.trim() && x.c === "") medias.push("falta la cantidad de \u201c" + x.p.trim() + "\u201d");
+      else if(!x.p.trim() && x.c !== "") medias.push("falta el nombre de una materia prima en la tarjeta " + (i + 1));
+    });
+  });
+  if(medias.length){
+    aviso("Revisa la materia prima: " + medias.slice(0, 2).join("; ") +
+          (medias.length > 2 ? " y " + (medias.length - 2) + " m\u00e1s." : "."), "err");
+    return;
+  }
+
+  var p = payload();
+  var mp = p.lineas.reduce(function(a, x){ return a + x.materias.length; }, 0);
+  var fLarga = new Date(p.fecha + "T12:00:00").toLocaleDateString("es-CL",
+                 {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+
+  preguntar("Confirmar la producci\u00f3n",
+    "Fecha:      " + fLarga + "\n" +
+    "Pastelero:  " + p.pastelero + "\n" +
+    "Productos:  " + p.lineas.length + "\n" +
+    "Materias:   " + mp + "\n\n" +
+    "Se anota al final de tu hoja. Si ya enviaste esta fecha, se reemplaza.",
+    "Enviar").then(function(si){
+    if(!si) return;
+
+    boton.disabled = true;
+    aviso("Enviando " + p.lineas.length + " productos\u2026", "wait");
+
+    fetch(URL_ENVIO, {
+      method: "POST", mode: "cors",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(p)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      boton.disabled = false;
+      if(j && j.ok){
+        aviso("Listo. Quedaron " + p.lineas.length + " productos en la hoja de " +
+              p.pastelero + (j.semana ? ", semana " + j.semana : "") + ".", "ok");
+      }else{
+        aviso("Google respondi\u00f3 con un error: " + ((j && j.error) || "sin detalle") + ".", "err");
+      }
+    })
+    .catch(function(){
+      boton.disabled = false;
+      aviso("No se pudo enviar. Revisa que haya internet y vuelve a intentarlo. " +
+            "Mientras tanto lo anotado sigue guardado en este equipo.", "err");
+    });
+  });
+});
+
+document.getElementById("bPrint").addEventListener("click", function(){ window.print(); });
+
+document.getElementById("bCsv").addEventListener("click", function(){
+  var m = meta();
+  var L = [["Fecha","Pastelero","Producto","Cantidad producida","Materia prima","Unidad","Cantidad materia prima"]];
+  conDatos().forEach(function(c){
+    var ms = c.mp.filter(function(x){ return x.p.trim() && x.c !== ""; });
+    if(!ms.length){ L.push([m.fecha, m.pastelero, c.prod, coma(num(c.cant)), "", "", ""]); return; }
+    ms.forEach(function(x){
+      L.push([m.fecha, m.pastelero, c.prod, coma(num(c.cant)), x.p, x.u, coma(num(x.c))]);
+    });
+  });
+  var csv = "\ufeff" + L.map(function(r){
+    return r.map(function(c){ return '"' + String(c).replace(/"/g, '""') + '"'; }).join(";");
+  }).join("\r\n");
+  var a = document.createElement("a");
+  a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+  a.download = "Produccion_" + (m.pastelero || "pastelero").replace(/\s+/g, "_") +
+               "_" + (m.fecha || "sin_fecha") + ".csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+document.getElementById("bClear").addEventListener("click", function(){
+  preguntar("\u00bfVaciar el formulario?",
+    "Se borran los productos y las materias primas. La fecha y el pastelero se mantienen.",
+    "Vaciar").then(function(si){
+    if(!si) return;
+    cards = [];
+    for(var i = 0; i < MINIMO_TARJETAS; i++) cards.push(tarjetaVacia());
+    pintar(); guardar();
+    aviso("Formulario vac\u00edo. Puedes empezar de nuevo.", "ok");
+  });
+});
+
+/* ---------------- arranque ---------------- */
+if(!cargar()){
+  for(var k = 0; k < MINIMO_TARJETAS; k++) cards.push(tarjetaVacia());
+  var hoy = new Date();
+  document.getElementById("fFecha").value =
+    hoy.getFullYear() + "-" +
+    String(hoy.getMonth() + 1).padStart(2, "0") + "-" +
+    String(hoy.getDate()).padStart(2, "0");
+}
+pintar();
+destino();
+</script>
+</body>
+</html>
