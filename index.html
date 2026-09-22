@@ -196,6 +196,24 @@ td.x{width:36px;text-align:center;}
   .mp-row .mCant{grid-area:c;} .mp-row .del{grid-area:x;}
 }
 @media print{ .addmp,.addcard{display:none!important;} }
+
+/* --- Desplegable propio. El <datalist> del navegador no se ve en iPhone
+       y en Android sale diminuto, asi que la lista se dibuja a mano. --- */
+.ac{position:fixed;z-index:300;background:#fff;border:1.5px solid var(--rosa-deep);
+  border-radius:12px;box-shadow:0 14px 38px rgba(0,0,0,.18);overflow-y:auto;
+  -webkit-overflow-scrolling:touch;display:none;padding:5px;}
+.ac.on{display:block;}
+.ac-row{padding:12px 13px;border-radius:8px;cursor:pointer;font-size:15px;line-height:1.3;
+  display:flex;align-items:center;gap:10px;}
+.ac-row:not(:last-child){border-bottom:1px solid var(--line);}
+.ac-row.on{background:var(--rosa-veil);}
+.ac-row b{font-weight:600;color:var(--rosa-deep);}
+.ac-nom{flex:1;min-width:0;}
+.ac-uni{flex-shrink:0;font-size:11.5px;font-weight:700;letter-spacing:.04em;
+  color:var(--ink-mute);background:var(--paper);border:1px solid var(--line);
+  border-radius:20px;padding:3px 9px;}
+.ac-vacio{padding:13px;font-size:13.5px;color:var(--ink-mute);}
+@media(max-width:700px){ .ac-row{padding:14px 13px;font-size:16px;} }
 </style>
 </head>
 <body>
@@ -225,8 +243,10 @@ td.x{width:36px;text-align:center;}
   </div>
 
   <div class="no-js nojs-warn">
-    Esta planilla necesita JavaScript. Si no puedes activarlo, imprime el formato en papel
-    y anota la producci&oacute;n a mano.
+    <b>As&iacute; no se puede llenar el formulario.</b><br>
+    Est&aacute;s viendo el archivo en el visor del tel&eacute;fono, que no deja funcionar la
+    planilla. Vuelve al <b>enlace</b> que te compartieron y &aacute;brelo desde ah&iacute;:
+    as&iacute; lo abre el navegador y ya puedes escribir y enviar.
   </div>
 
   <div class="card">
@@ -299,8 +319,7 @@ td.x{width:36px;text-align:center;}
 
 </div>
 
-<datalist id="dlProd"></datalist>
-<datalist id="dlMP"></datalist>
+<div class="ac" id="acPanel" role="listbox"></div>
 
 <div class="dlg-fondo" id="dlgFondo" role="dialog" aria-modal="true">
   <div class="dlg">
@@ -413,17 +432,138 @@ function soloNum(v){
 /* Para el Excel chileno el decimal va con coma, si no lo toma como texto. */
 function coma(n){ return String(n).replace(".", ","); }
 
-/* ---------------- listas de autocompletado ---------------- */
-(function(){
-  var a = document.getElementById("dlProd"), b = document.getElementById("dlMP");
-  a.innerHTML = D.productos.map(function(p){ return '<option value="' + esc(p) + '">'; }).join("");
-  b.innerHTML = D.materias.map(function(m){ return '<option value="' + esc(m.p) + '">'; }).join("");
-})();
+/* ---------------- desplegable propio ----------------
+   Se dibuja en la pagina en vez de usar <datalist>, porque en iPhone el
+   datalist no aparece y en Android sale tan chico que no se puede tocar.
+   El panel cuelga del body para que no lo corte el borde de la tarjeta. */
+var CAT = {
+  prod: D.productos.map(function(p){ return {p:p, u:""}; }),
+  mp:   D.materias
+};
+var CAT_N = { prod: CAT.prod.map(function(o){ return norm(o.p); }),
+              mp:   CAT.mp.map(function(o){ return norm(o.p); }) };
+
+var acP = document.getElementById("acPanel");
+var acIn = null, acOpc = [], acIdx = -1;
+
+function acBuscar(cat, txt){
+  var q = norm(txt), lista = CAT[cat], nn = CAT_N[cat];
+  if(!q) return lista.slice(0, 60);
+  var empieza = [], contiene = [];
+  for(var i = 0; i < lista.length; i++){
+    var k = nn[i].indexOf(q);
+    if(k === 0) empieza.push(lista[i]);
+    else if(k > 0) contiene.push(lista[i]);
+    if(empieza.length + contiene.length > 120) break;
+  }
+  return empieza.concat(contiene).slice(0, 60);
+}
+
+function acPintar(txt){
+  var q = norm(txt);
+  acP.innerHTML = acOpc.length
+    ? acOpc.map(function(o, i){
+        var vis = esc(o.p), n = norm(o.p), k = q ? n.indexOf(q) : -1;
+        if(k >= 0 && q) vis = esc(o.p.slice(0,k)) + "<b>" + esc(o.p.slice(k, k+q.length)) + "</b>" + esc(o.p.slice(k+q.length));
+        return '<div class="ac-row' + (i === acIdx ? " on" : "") + '" data-i="' + i + '">' +
+               '<span class="ac-nom">' + vis + '</span>' +
+               (o.u ? '<span class="ac-uni">' + esc(o.u) + '</span>' : '') + '</div>';
+      }).join("")
+    : '<div class="ac-vacio">No está en la lista. Puedes escribirlo igual.</div>';
+}
+
+function acUbicar(){
+  if(!acIn) return;
+  var r = acIn.getBoundingClientRect();
+  /* visualViewport descuenta el teclado del telefono; innerHeight no lo hace
+     y por eso la lista quedaba tapada debajo del teclado en el iPhone. */
+  var vv = window.visualViewport;
+  var vh = vv ? vv.height : window.innerHeight;
+  var vw = vv ? vv.width  : window.innerWidth;
+
+  var abajo  = vh - r.bottom - 10;
+  var arriba = r.top - 10;
+  var ponerArriba = abajo < 170 && arriba > abajo;
+  /* el alto tiene que ser el del lado donde realmente se dibuja, no el del otro */
+  var alto = Math.min(300, Math.max(120, ponerArriba ? arriba : abajo));
+
+  acP.style.left = Math.max(8, Math.min(r.left, vw - r.width - 8)) + "px";
+  acP.style.width = Math.min(r.width, vw - 16) + "px";
+  acP.style.maxHeight = alto + "px";
+  if(ponerArriba){ acP.style.top = ""; acP.style.bottom = (vh - r.top + 5) + "px"; }
+  else { acP.style.bottom = ""; acP.style.top = (r.bottom + 5) + "px"; }
+}
+
+function acAbrir(input){
+  acIn = input; acIdx = -1;
+  acOpc = acBuscar(input.getAttribute("data-cat"), input.value);
+  acPintar(input.value);
+  acP.classList.add("on");
+  acUbicar();
+  /* En el telefono el campo suele quedar abajo y el teclado tapa la lista:
+     se sube el campo para que siempre quede sitio libre debajo. */
+  if(window.innerWidth <= 700){
+    var r = input.getBoundingClientRect();
+    if(r.top > 170){
+      window.scrollBy({ top: r.top - 130, behavior: "smooth" });
+      setTimeout(acUbicar, 260);
+      setTimeout(acUbicar, 520);
+    }
+  }
+}
+function acCerrar(){ acP.classList.remove("on"); acIn = null; acOpc = []; acIdx = -1; }
+
+function acElegir(i){
+  if(!acIn || !acOpc[i]) return;
+  var input = acIn;
+  input.value = acOpc[i].p;
+  input.dispatchEvent(new Event("input", {bubbles:true}));
+  acCerrar();
+  input.blur();
+}
+
+/* pointerdown en vez de click: en el telefono el click llega despues de que
+   el campo pierde el foco y la seleccion se perdia. */
+acP.addEventListener("pointerdown", function(e){
+  var fila = e.target.closest(".ac-row");
+  if(!fila) return;
+  e.preventDefault();
+  acElegir(+fila.getAttribute("data-i"));
+});
+
+cont.addEventListener("focusin", function(e){
+  if(e.target.matches(".fProd, .mProd")) acAbrir(e.target);
+});
+cont.addEventListener("focusout", function(e){
+  if(e.target.matches(".fProd, .mProd")) setTimeout(function(){
+    if(acIn === e.target) acCerrar();
+  }, 120);
+});
+document.addEventListener("keydown", function(e){
+  if(!acP.classList.contains("on")) return;
+  if(e.key === "ArrowDown" || e.key === "ArrowUp"){
+    e.preventDefault();
+    acIdx += (e.key === "ArrowDown" ? 1 : -1);
+    if(acIdx < 0) acIdx = acOpc.length - 1;
+    if(acIdx >= acOpc.length) acIdx = 0;
+    acPintar(acIn ? acIn.value : "");
+    var f = acP.querySelector(".ac-row.on");
+    if(f) f.scrollIntoView({block:"nearest"});
+  }else if(e.key === "Enter" && acIdx >= 0){
+    e.preventDefault(); acElegir(acIdx);
+  }else if(e.key === "Escape"){ acCerrar(); }
+});
+window.addEventListener("scroll", function(){ if(acIn) acUbicar(); }, true);
+window.addEventListener("resize", function(){ if(acIn) acUbicar(); });
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize", function(){ if(acIn) acUbicar(); });
+  window.visualViewport.addEventListener("scroll", function(){ if(acIn) acUbicar(); });
+}
 
 /* ---------------- pintado ---------------- */
 function filaMP(ci, mi, m){
   return '<div class="mp-row" data-c="' + ci + '" data-m="' + mi + '">' +
-    '<input class="mProd" list="dlMP" placeholder="Escribe la materia prima" value="' + esc(m.p) + '">' +
+    '<input class="mProd" data-cat="mp" autocomplete="off" placeholder="Escribe la materia prima" value="' + esc(m.p) + '">' +
     '<input class="mUni" value="' + esc(m.u) + '" placeholder="Unidad" readonly tabindex="-1">' +
     '<input class="mCant" inputmode="decimal" placeholder="Cantidad" value="' + esc(m.c) + '">' +
     '<button class="del" title="Quitar">&times;</button>' +
@@ -431,6 +571,7 @@ function filaMP(ci, mi, m){
 }
 
 function pintar(){
+  if(typeof acCerrar === "function") acCerrar();
   cont.innerHTML = cards.map(function(c, i){
     var llena = c.prod && c.cant !== "";
     return '<div class="card pcard' + (llena ? " llena" : "") + '" data-c="' + i + '">' +
@@ -443,7 +584,7 @@ function pintar(){
       '<div class="card-b">' +
         '<div class="meta">' +
           '<div class="fld"><label>Nombre del producto</label>' +
-            '<input class="fProd" list="dlProd" placeholder="Escribe y se completa solo" value="' + esc(c.prod) + '"></div>' +
+            '<input class="fProd" data-cat="prod" autocomplete="off" placeholder="Escribe y se completa solo" value="' + esc(c.prod) + '"></div>' +
           '<div class="fld"><label>Cantidad producida</label>' +
             '<input class="fCant" inputmode="decimal" placeholder="0" value="' + esc(c.cant) + '"></div>' +
         '</div>' +
@@ -559,6 +700,12 @@ cont.addEventListener("input", function(e){
   }
   else return;
 
+  if(t === acIn){
+    acIdx = -1;
+    acOpc = acBuscar(t.getAttribute("data-cat"), t.value);
+    acPintar(t.value);
+    acUbicar();
+  }
   card.classList.toggle("llena", !!(cards[i].prod && cards[i].cant !== ""));
   resumen();
   guardar();
