@@ -210,7 +210,9 @@ td.x{width:36px;text-align:center;}
        y en Android sale diminuto, asi que la lista se dibuja a mano. --- */
 .ac{position:fixed;z-index:300;background:#fff;border:1.5px solid var(--rosa-deep);
   border-radius:12px;box-shadow:0 14px 38px rgba(0,0,0,.18);overflow-y:auto;
-  -webkit-overflow-scrolling:touch;display:none;padding:5px;}
+  -webkit-overflow-scrolling:touch;display:none;padding:5px;
+  touch-action:pan-y;              /* deja barrer la lista con el dedo */
+  overscroll-behavior:contain;}    /* al llegar al final no arrastra la pagina */
 .ac.on{display:block;}
 .ac-row{padding:12px 13px;border-radius:8px;cursor:pointer;font-size:15px;line-height:1.3;
   display:flex;align-items:center;gap:10px;}
@@ -531,22 +533,44 @@ function acElegir(i){
   input.blur();
 }
 
-/* pointerdown en vez de click: en el telefono el click llega despues de que
-   el campo pierde el foco y la seleccion se perdia. */
+/* Elegir con el dedo sin romper el deslizar.
+   Antes se frenaba el gesto en pointerdown para que el campo no perdiera el
+   foco, pero eso en el iPhone tambien cancela el arrastre y la lista quedaba
+   inmovil: solo se podia tocar lo que se veia. Ahora se anota donde empezo
+   el toque y recien al levantar el dedo se decide: si no se movio, es un
+   toque y se elige; si se movio, era un deslizamiento y no se toca nada. */
+var acDedo = false, acY0 = 0, acFila0 = null;
+
 acP.addEventListener("pointerdown", function(e){
-  var fila = e.target.closest(".ac-row");
-  if(!fila) return;
-  e.preventDefault();
-  acElegir(+fila.getAttribute("data-i"));
+  acDedo = true;
+  acY0 = e.clientY;
+  acFila0 = e.target.closest(".ac-row");
+  /* con raton si se frena, para no perder el foco del campo;
+     con el dedo nunca, porque bloquearia el deslizar */
+  if(e.pointerType === "mouse") e.preventDefault();
 });
+
+acP.addEventListener("pointerup", function(e){
+  var fila = e.target.closest(".ac-row");
+  var sedeslizo = Math.abs(e.clientY - acY0) > 10;
+  acDedo = false;
+  if(fila && fila === acFila0 && !sedeslizo){
+    e.preventDefault();
+    acElegir(+fila.getAttribute("data-i"));
+  }
+  acFila0 = null;
+});
+
+acP.addEventListener("pointercancel", function(){ acDedo = false; acFila0 = null; });
 
 cont.addEventListener("focusin", function(e){
   if(e.target.matches(".fProd, .mProd")) acAbrir(e.target);
 });
 cont.addEventListener("focusout", function(e){
   if(e.target.matches(".fProd, .mProd")) setTimeout(function(){
+    if(acDedo) return;                 /* se esta deslizando la lista */
     if(acIn === e.target) acCerrar();
-  }, 120);
+  }, 250);
 });
 document.addEventListener("keydown", function(e){
   if(!acP.classList.contains("on")) return;
